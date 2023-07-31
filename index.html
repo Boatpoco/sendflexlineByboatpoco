@@ -1,0 +1,227 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+  <title>ควยไรละเย็ดแม่</title>
+  <link rel="stylesheet" href="css/style.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .info-row {
+        display: flex;
+        gap: 20px;
+        align-items: baseline;
+    }
+    form, p {
+        margin-bottom: 15px;
+    }
+    .input-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    input[type="text"], textarea {
+        width: 50%;
+        padding: 10px;
+    }
+    button {
+        margin-right: 10px;
+    }
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+        vertical-align: top;
+        text-align: left;
+    }
+  </style>
+
+  <script>
+    function pasteFromClipboard(id) {
+        navigator.clipboard.readText().then(text => {
+            document.getElementById(id).value = text;
+        });
+    }
+  </script>
+</head>
+<body>
+ <h2>สวัสดีครับผม</h2>
+
+   <form action="#" method="post" name="flexJson">
+        <label for="alttext">alttext:</label><br>
+        <div class="input-group">
+            <input type="text" id="alttext" name="alttext">
+            <button type="button" onclick="pasteFromClipboard('alttext')">Paste from Clipboard</button>
+        </div>
+        
+        <label for="message">Message:</label><br>
+        <div class="input-group">
+            <textarea id="message" name="message"></textarea>
+            <button type="button" onclick="pasteFromClipboard('message')">Paste from Clipboard</button>
+        </div>
+
+        <label for="flexjson">flexjson:</label><br>
+        <div class="input-group">
+            <textarea id="flexjson" name="flexjson"></textarea>
+            <button type="button" onclick="pasteFromClipboard('flexjson')">Paste from Clipboard</button>
+        </div>
+
+        <label for="imageUrl">Image URL:</label><br>
+        <div class="input-group">
+            <input type="text" id="imageUrl" name="imageUrl">
+            <button type="button" onclick="pasteFromClipboard('imageUrl')">Paste from Clipboard</button>
+        </div>
+    </form>
+    
+    <div class="info-row">
+        <p id="os"><b>OS:</b> </p>
+        <p id="language"><b>Language:</b> </p>
+        <p id="version"><b>Version:</b> </p>
+        <p id="isInClient"><b>isInClient:</b> </p>
+        <p id="accessToken"><b>AccessToken:</b> </p>
+    </div>
+
+    <div class="user-info">
+        <img id="pictureUrl">
+        <div class="user-details">
+            <p id="userId"><b>userID</b> </p>
+            <p id="displayName"><b>displayName:</b> </p>
+            <p id="statusMessage"><b>statusMessage:</b> </p>
+            <p id="decodedIDToken"><b>email:</b> </p>
+            <p id="isLoggedIn"><b>isLoggedIn:</b> </p>
+        </div>
+    </div>
+
+    <button id="btnMsg" onclick="sendMsg()">Send Message</button>
+    <button id="btnShare" onclick="shareMsg()">Share Target Picker</button>
+    <button onclick="openWindow()">Open Window</button>
+    <button id="btnScanCode" onclick="scanCode()">Scan Code</button>
+    <button id="btnLogOut" onclick="logOut()">Log Out</button>
+    <button id="btnClose" onclick="closed()">Close</button>
+      
+  <script>
+        document.getElementById("btnClip").addEventListener("click", async function() {
+            const text = await navigator.clipboard.readText();
+            document.getElementById("flexjson").value = text;
+        });
+    </script>
+  <script src="js/vconsole.min.js"></script>
+  <script>
+    var vConsole = new VConsole()
+    console.log("Hello World!")
+  </script>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    async function shareMsg() {
+  const alttext = document.getElementById("alttext").value;
+  const flexjsonInput = document.getElementById("flexjson").value;
+  const message = document.getElementById("message").value;
+  const imageUrl = document.getElementById("imageUrl").value;
+
+  const contents = [];
+
+  if (message.trim()) {
+    contents.push({
+      type: "text",
+      text: message,
+    });
+  }
+
+  if (alttext.trim() && flexjsonInput.trim()) {
+    const flexjson = JSON.parse(flexjsonInput);
+    contents.push({
+      'type': 'flex',
+      'altText': alttext,
+      'contents': flexjson
+    });
+  }
+
+  if (imageUrl.trim()) {
+    contents.push({
+      type: "image",
+      originalContentUrl: imageUrl,
+      previewImageUrl: imageUrl
+    });
+  }
+
+  if (contents.length === 0) {
+    alert("alttext หรือ flexjson หรือ message หรือ image url ไม่สามารถว่างเปล่าได้");
+    return;
+  }
+
+  liff
+  .shareTargetPicker(contents)
+  .then(function (res) {
+    if (res) {
+      console.log(`[${res.status}] Message sent!`);
+    } else {
+      console.log("TargetPicker was closed!");
+    }
+  })
+  .catch(function (error) {
+    console.log("something wrong happen");
+  });
+}
+
+
+    
+    function logOut() {
+      liff.logout()
+      window.location.reload()
+    }
+
+    function closed() {
+      liff.closeWindow()
+    }
+
+    async function scanCode() {
+      const result = await liff.scanCode()
+      document.getElementById("scanCode").append(result.value)
+    }
+    
+    function openWindow() {
+      liff.openWindow({
+        url: "https://line.me",
+        external: true
+      })
+    }
+    async function getUserProfile() {
+      const profile = await liff.getProfile()
+      document.getElementById("pictureUrl").src = profile.pictureUrl
+      document.getElementById("userId").append(profile.userId)
+      document.getElementById("statusMessage").append(profile.statusMessage)
+      document.getElementById("displayName").append(profile.displayName)
+      document.getElementById("decodedIDToken").append(liff.getDecodedIDToken().email)
+    }
+    
+    function getEnvironment() {
+      document.getElementById("os").append(liff.getOS())
+      document.getElementById("language").append(liff.getLanguage())
+      document.getElementById("version").append(liff.getVersion())
+      document.getElementById("accessToken").append(liff.getAccessToken())
+      if (liff.isInClient()) {
+        document.getElementById("btnLogOut").style.display = "none"
+      } else {
+        document.getElementById("btnMsg").style.display = "none"
+        document.getElementById("btnScanCode").style.display = "none"
+        document.getElementById("btnClose").style.display = "none"
+      }
+    }
+
+   async function main() {
+  liff.ready.then(() => {
+    document.getElementById("isLoggedIn").append(liff.isLoggedIn())
+    if (liff.isLoggedIn()) {
+      getEnvironment()
+      getUserProfile()
+    } else {
+      liff.login()
+    }
+  })
+  await liff.init({ liffId: "1657839596-VjrvjmlJ" })
+}
+    main()
+  </script>
+</body>
+</html>
