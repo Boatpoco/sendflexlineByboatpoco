@@ -37,41 +37,39 @@
   </style>
 
   <script>
-    function pasteFromClipboard(id) {
-        navigator.clipboard.readText().then(text => {
-            document.getElementById(id).value = text;
-        });
+    function clearInput(elementId) {
+        document.getElementById(elementId).value = '';
     }
-  </script>
+</script>
 </head>
 <body>
  <h2>สวัสดีครับผม</h2>
 
    <form action="#" method="post" name="flexJson">
-        <label for="alttext">alttext:</label><br>
-        <div class="input-group">
-            <input type="text" id="alttext" name="alttext">
-            <button type="button" onclick="pasteFromClipboard('alttext')">Paste from Clipboard</button>
-        </div>
-        
-        <label for="message">Message:</label><br>
-        <div class="input-group">
-            <textarea id="message" name="message"></textarea>
-            <button type="button" onclick="pasteFromClipboard('message')">Paste from Clipboard</button>
-        </div>
+    <label for="alttext">alttext:</label><br>
+    <div class="input-group">
+        <input type="text" id="alttext" name="alttext">
+        <button type="button" onclick="clearInput('alttext')">Clear Input</button>
+    </div>
+    
+    <label for="message">Message:</label><br>
+    <div class="input-group">
+        <textarea id="message" name="message"></textarea>
+        <button type="button" onclick="clearInput('message')">Clear Input</button>
+    </div>
 
-        <label for="flexjson">flexjson:</label><br>
-        <div class="input-group">
-            <textarea id="flexjson" name="flexjson"></textarea>
-            <button type="button" onclick="pasteFromClipboard('flexjson')">Paste from Clipboard</button>
-        </div>
+    <label for="flexjson">flexjson:</label><br>
+    <div class="input-group">
+        <textarea id="flexjson" name="flexjson"></textarea>
+        <button type="button" onclick="clearInput('flexjson')">Clear Input</button>
+    </div>
 
-        <label for="imageUrl">Image URL:</label><br>
-        <div class="input-group">
-            <input type="text" id="imageUrl" name="imageUrl">
-            <button type="button" onclick="pasteFromClipboard('imageUrl')">Paste from Clipboard</button>
-        </div>
-    </form>
+    <label for="imageUrl">Image URL:</label><br>
+    <div class="input-group">
+        <input type="text" id="imageUrl" name="imageUrl">
+        <button type="button" onclick="clearInput('imageUrl')">Clear Input</button>
+    </div>
+</form>
     
     <div class="info-row">
         <p id="os"><b>OS:</b> </p>
@@ -99,12 +97,11 @@
     <button id="btnLogOut" onclick="logOut()">Log Out</button>
     <button id="btnClose" onclick="closed()">Close</button>
       
-  <script>
-        document.getElementById("btnClip").addEventListener("click", async function() {
-            const text = await navigator.clipboard.readText();
-            document.getElementById("flexjson").value = text;
-        });
-    </script>
+   <script>
+    function clearInput(elementId) {
+        document.getElementById(elementId).value = '';
+    }
+</script>
   <script src="js/vconsole.min.js"></script>
   <script>
     var vConsole = new VConsole()
